@@ -1,0 +1,20 @@
+{
+  "name": "connect-exec",
+  "description": "Exec middleware for Connect: runs a given command on a given path.",
+  "version": "0.0.1",
+  "author": "Marcello Nuccio <marcello.nuccio@gmail.com>",
+  "main": "./index.js",
+  "dependencies": {
+    "connect": ">= 1.7.0"
+  },
+  "engines": {
+    "node": "~0.4.12"
+  },
+  "directories": {
+    "lib": "./lib"
+  },
+  "files": [
+    ""
+  ],
+  "devDependencies": {}
+}

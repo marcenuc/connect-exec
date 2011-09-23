@@ -1,0 +1,62 @@
+# connect-exec
+
+Exec middleware for [Connect](http://senchalabs.github.com/connect/) on [Node.js](http://nodejs.org). Runs a configured command for a given path.
+
+
+## Installation
+
+Clone this repository into your `node_modules` folder.
+
+
+## Usage
+
+### connectExec.exec(options)
+
+Include this middleware to run arbitrary commands for configured urls.
+
+    var connect = require('connect'),
+        connectExec = require('connect-exec');
+    
+    connect(
+      connectExec.exec([
+      connectExec.exec([
+        [/^\/runa\/([a-z]+)$/, __dirname, 'java', ['-jar', 'myapp.jar']],
+        [/^\/runb\/([a-z]+)$/, __dirname, 'node', []]
+      ]),
+      connect['static'](__dirname)
+    ).listen(3000);
+
+Options:
+
+Is an array of array. Each array has, in order: 
+ - `path`  RegExp to match against the pathname in the url
+ - `cwd`   Working directory to run the command
+ - `cmd`   Command to run for this url
+ - `args`  Array of arguments
+
+The mathing groups in the path are passed as additional arguments to the command.
+
+## License
+
+(The MIT License)
+
+Copyright (c) 2011 Marcello Nuccio &lt;marcello.nuccio@gmail.com&gt;
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
