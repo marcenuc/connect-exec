@@ -15,13 +15,38 @@ Clone this repository into your `node_modules` folder.
 Include this middleware to run arbitrary commands for configured urls.
 
     var connect = require('connect'),
-        connectExec = require('connect-exec');
+      connectExec = require('connect-exec'),
+      argPattern = "/([a-zA-Z]+=[a-zA-Z0-9.]+)",
+      regexpPath = new RegExp("^/exec/([a-z]+)(?:" + argPattern + ")*$"),
+      regexpArg = new RegExp(argPattern, 'g');
     
+    /**
+     * Matches urls like:
+     *  - /exec/foo         => ['foo']
+     *  - /exec/bar/a=1/b=c => ['bar', 'a=1', 'b=c']
+     *  - /other            => null
+     */
+    function aMatcher(url) {
+      'use strict';
+      var m = regexpPath.exec(url), args = [];
+      while (m) {
+        args.push(m[1]);
+        m = regexpArg.exec(url);
+      }
+      return args.length ? args : null;
+    }
+
+    function anotherMatcher(url) {
+      if (url === '/myprettyurl') {
+        return ['pretty'];
+      }
+    }
+
     connect(
       connectExec.exec([
       connectExec.exec([
-        [/^\/runa\/([a-z]+)$/, __dirname, 'java', ['-jar', 'myapp.jar']],
-        [/^\/runb\/([a-z]+)$/, __dirname, 'node', []]
+        [aMatcher, __dirname, 'java', ['-jar', 'myapp.jar']],
+        [anotherMatcher, __dirname, 'node', []]
       ]),
       connect['static'](__dirname)
     ).listen(3000);
