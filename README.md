@@ -29,12 +29,12 @@ Include this middleware to run arbitrary commands for configured urls.
 Options:
 
 Is an array of array. Each array has, in order: 
- - `path`  RegExp to match against the pathname in the url
- - `cwd`   Working directory to run the command
- - `cmd`   Command to run for this url
- - `args`  Array of arguments
+ - `matcher` Function that given a path returns null or an array of arguments.
+ - `cwd`     Working directory to run the command
+ - `cmd`     Command to run for this url
+ - `args`    Array of arguments
 
-The mathing groups in the path are passed as additional arguments to the command.
+The arguments returned by the matcher are passed as additional arguments to the command. If the matcher returns null, nothing is done.
 
 ## License
 
