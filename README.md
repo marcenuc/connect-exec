@@ -54,6 +54,7 @@ Include this middleware to run arbitrary commands for configured urls.
 Options:
 
 Is an array of array. Each array has, in order: 
+
  - `matcher` Function that given a path returns null or an array of arguments.
  - `cwd`     Working directory to run the command
  - `cmd`     Command to run for this url
