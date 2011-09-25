@@ -5,7 +5,6 @@
   "author": "Marcello Nuccio <marcello.nuccio@gmail.com>",
   "main": "./index.js",
   "dependencies": {
-    "connect": ">= 1.7.0"
   },
   "engines": {
     "node": "~0.4.12"
@@ -16,5 +15,7 @@
   "files": [
     ""
   ],
-  "devDependencies": {}
+  "devDependencies": {
+    "jasmine-node": "*"
+  }
 }

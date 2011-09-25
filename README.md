@@ -7,60 +7,43 @@ Exec middleware for [Connect](http://senchalabs.github.com/connect/) on [Node.js
 
 Clone this repository into your `node_modules` folder.
 
+To run the tests use [jasmine-node](https://github.com/mhevery/jasmine-node):
+
+    jasmine-node test
+
 
 ## Usage
 
-### connectExec.exec(options)
-
-Include this middleware to run arbitrary commands for configured urls.
-
     var connect = require('connect'),
-      connectExec = require('connect-exec'),
-      argPattern = "/([a-zA-Z]+=[a-zA-Z0-9.]+)",
-      regexpPath = new RegExp("^/exec/([a-z]+)(?:" + argPattern + ")*$"),
-      regexpArg = new RegExp(argPattern, 'g');
-    
-    /**
-     * Matches urls like:
-     *  - /exec/foo         => ['foo']
-     *  - /exec/bar/a=1/b=c => ['bar', 'a=1', 'b=c']
-     *  - /other            => null
-     */
-    function aMatcher(url) {
-      'use strict';
-      var m = regexpPath.exec(url), args = [];
-      while (m) {
-        args.push(m[1]);
-        m = regexpArg.exec(url);
-      }
-      return args.length ? args : null;
-    }
+      path = require('path'),
+      cmdExec = require('connect-exec').exec;
 
-    function anotherMatcher(url) {
-      if (url === '/myprettyurl') {
-        return ['pretty'];
-      }
-    }
+    connect.createServer()
+      .use(connect.logger())
+      .use('/run',
+        cmdExec('application/json', __dirname, 'java', ['-jar', 'json-querier.jar']))
+      .use('/app', connect['static'](path.join(__dirname, 'app')))
+      .listen(3000);
 
-    connect(
-      connectExec.exec([
-      connectExec.exec([
-        [aMatcher, __dirname, 'java', ['-jar', 'myapp.jar']],
-        [anotherMatcher, __dirname, 'node', []]
-      ]),
-      connect['static'](__dirname)
-    ).listen(3000);
+This will run the command
 
-Options:
+    java -jar json-querier.jar foo a=b c=1
 
-Is an array of array. Each array has, in order: 
+for the following pathname in the url `/run/foo/a=b/c=1`, while serving static content at `/app/...`.
 
- - `matcher` Function that given a path returns null or an array of arguments.
- - `cwd`     Working directory to run the command
- - `cmd`     Command to run for this url
- - `args`    Array of arguments
+The pathname MUST follow the given pattern:
 
-The arguments returned by the matcher are passed as additional arguments to the command. If the matcher returns null, nothing is done.
+    /something/var1=val1/var2=val2
+
+
+### connectExec.exec()
+
+Arguments to exec():
+
+ - `contentType` Content-Type for the output of the command
+ - `cwd`         Working directory for the command
+ - `cmd`         Command to be run for this url
+ - `baseArgs`    Static arguments to the command
 
 ## License
 
