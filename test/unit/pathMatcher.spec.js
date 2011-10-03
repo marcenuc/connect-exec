@@ -8,6 +8,7 @@ describe('pathMatcher', function () {
   var pathMatcher = require('../../lib/pathMatcher'),
     validUrls = [
       '/scalarini',
+      '/stampaEtichette[BollaAs400_110704_40241_Y_10]',
       '/bolla/data=110704/numero=40241/enteNumerazione=Y/codiceNumerazione=10'
     ],
     invalidUrls = [
@@ -16,7 +17,7 @@ describe('pathMatcher', function () {
       '/scalarini/',
       '/bolla/data=110704/numero=40241/enteNumerazione=Y/codiceNumerazione:10'
     ];
-  
+
   invalidUrls.forEach(function (invalidUrl) {
     it('should not match "' + invalidUrl + '"', function () {
       expect(pathMatcher(invalidUrl)).toBe(null);
@@ -27,8 +28,12 @@ describe('pathMatcher', function () {
     expect(pathMatcher(validUrls[0])).toEqual(['scalarini']);
   });
 
-  it('should extract arguments from "' + validUrls[1] + '"', function () {
-    expect(pathMatcher(validUrls[1])).toEqual([
+  it('should return no arguments from "' + validUrls[1] + '"', function () {
+    expect(pathMatcher(validUrls[1])).toEqual(['stampaEtichette[BollaAs400_110704_40241_Y_10]']);
+  });
+
+  it('should extract arguments from "' + validUrls[2] + '"', function () {
+    expect(pathMatcher(validUrls[2])).toEqual([
       'bolla',
       'data=110704',
       'numero=40241',
