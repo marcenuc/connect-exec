@@ -17,5 +17,8 @@
   ],
   "devDependencies": {
     "jasmine-node": "*"
+  },
+  "scripts": {
+    "test": "./node_modules/jasmine-node/bin/jasmine-node test"
   }
 }
