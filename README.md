@@ -20,8 +20,10 @@ To run the tests use [jasmine-node](https://github.com/mhevery/jasmine-node):
 
     connect.createServer()
       .use(connect.logger())
+      .use('/taskRunner',
+        cmdExec({ 'Content-Type': 'text/plain;charset=utf-8', '_parseHeadersInOutput': true }, __dirname, './taskRunner.sh', []))
       .use('/run',
-        cmdExec('application/json', __dirname, 'java', ['-jar', 'json-querier.jar']))
+        cmdExec({ 'Content-Type': 'application/json;charset=utf-8' }, __dirname, 'java', ['-jar', 'json-querier.jar']));
       .use('/app', connect['static'](path.join(__dirname, 'app')))
       .listen(3000);
 
