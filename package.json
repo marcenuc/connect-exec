@@ -7,7 +7,7 @@
   "dependencies": {
   },
   "engines": {
-    "node": "~0.4.12"
+    "node": "~0.6.5"
   },
   "directories": {
     "lib": "./lib"
